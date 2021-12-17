@@ -14,8 +14,8 @@ const Tasks = () => {
   return (
     <div className="mt-3">
       <ul className="list-group">
-        {tasks.map(({ id, text, isEdit }) => (
-          <Task id={id} text={text} isEdit={isEdit} key={id} />
+        {tasks.map(({ id, text }) => (
+          <Task id={id} text={text} key={id} />
         ))}
       </ul>
     </div>

@@ -19,19 +19,9 @@ const tasksReducer = createSlice({
       state.tasks = state.tasks.filter((t) => t.id !== id);
     },
 
-    toggleEditing: (state, { payload: { id } }) => {
+    editTasks: (state, { payload: { id, newText } }) => {
       state.tasks = state.tasks.map((t) => {
-        if (t.id === id) {
-          return { ...t, isEdit: !t.isEdit }
-        }
-        return { ...t, isEdit: false }
-      });
-    },
-
-    editTasks: (state, { payload: { newText } }) => {
-      console.log(newText);
-      state.tasks = state.tasks.map((t) => {
-        if (t.isEdit && newText !== '') {
+        if (t.id === id && newText !== '') {
           return { ...t, text: newText };
         }
         return t;
@@ -40,7 +30,7 @@ const tasksReducer = createSlice({
   },
 });
 
-export const { addTask, removeTask, toggleEditing, editTasks } = tasksReducer.actions;
+export const { addTask, removeTask, editTasks } = tasksReducer.actions;
 
 export default tasksReducer.reducer;
 // END

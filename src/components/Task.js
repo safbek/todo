@@ -2,49 +2,40 @@ import React, { useState } from 'react';
 
 import { useDispatch } from 'react-redux';
 
-import { removeTask, editTasks, toggleEditing } from '../slices/tasksSlice.js';
+import { removeTask, editTasks } from '../slices/tasksSlice.js';
 
-const Task = ({ id, text, isEdit }) => {
-  const [newText, setNewText] = useState('');
+const Task = ({ id, text }) => {
+  const [isEdit, setEdit] = useState(false);
 
   const dispatch = useDispatch();
+
+  const [newText, setNewText] = useState(text);
+
+  const handleChange = (e) => setNewText(e.target.value);
 
   const handleRemoveTask = (id) => (e) => {
     e.preventDefault();
     dispatch(removeTask({ id }));
   };
 
-  const handleToogle = (id) => (e) => {
-    e.preventDefault();
-    dispatch(toggleEditing({ id }));
-  };
-
   const handleEdit = (id) => (e) => {
     e.preventDefault();
-    dispatch(editTasks({ newText }));
-    dispatch(toggleEditing({ id }));
+    dispatch(editTasks({ id, newText }));
+    setEdit(!isEdit);
   };
-
-  const handleChange = (e) => setNewText(e.target.value);
 
     return (
         <li className="list-group-item d-flex align-center">
             { 
               isEdit ?
-                <>
-                    <input type="text" required value={ newText ? newText : text } onChange={ handleChange } />
-                    <button type="button" className="edit mr-2" onClick={ handleEdit(id) }>
-                        <span>Save</span>
-                    </button>
-                </>
+                <input type="text" required value={newText} onChange={ handleChange } />
                 :
-                <>
-                    <span className="mr-auto">{text}</span>
-                    <button type="button" className="edit mr-2" onClick={ handleToogle(id) }>
-                        <span>Edit</span>
-                    </button>
-                </>
+                <span className="mr-auto">{ text }</span>
             }
+
+            <button type="button" className="edit mr-2" onClick={ handleEdit(id) }>
+              <span>{ isEdit ? 'Save' : 'Edit' }</span>
+             </button>
 
             <button type="button" onClick={handleRemoveTask(id)}>
               <span>&times;</span>
